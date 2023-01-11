@@ -1,8 +1,9 @@
+import Navbar from './components/Navbar'
 function FooterLayout({ children }) {
   return (
     <>
       {children}
-      <div>Footer</div>
+      <Navbar />
     </>
   )
 }
