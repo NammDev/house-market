@@ -7,6 +7,7 @@ import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase
 import { db } from '../firebase.config'
 import { setDoc, doc, serverTimestamp } from 'firebase/firestore'
 import { useNavigate } from 'react-router-dom'
+import OAuth from '../components/OAuth'
 
 function SignUp() {
   const [showPassword, setShowPassword] = useState(false)
@@ -109,8 +110,9 @@ function SignUp() {
             </button>
           </div>
         </form>
+        <OAuth />
         <Link to={routes.signIn} className='registerLink'>
-          Sign In
+          Sign In Instead
         </Link>
       </div>
     </>

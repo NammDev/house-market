@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import OAuth from '../components/OAuth'
 
 function SignIn() {
   const [showPassword, setShowPassword] = useState(false)
@@ -78,8 +79,9 @@ function SignIn() {
             </button>
           </div>
         </form>
+        <OAuth />
         <Link to={routes.signUp} className='registerLink'>
-          Sign Up
+          Sign Up Instead
         </Link>
       </div>
     </>
