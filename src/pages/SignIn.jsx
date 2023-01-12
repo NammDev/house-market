@@ -23,15 +23,15 @@ function SignIn() {
   }
 
   const navigate = useNavigate()
-  const auth = getAuth()
 
   const handleOnSubmit = async (e) => {
     e.preventDefault()
+    const auth = getAuth()
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password)
       const user = userCredential.user
       toast.success(`Success login to account ${user.displayName}`)
-      navigate('/')
+      navigate(routes.profile)
     } catch (error) {
       toast.error(error.message)
     }
