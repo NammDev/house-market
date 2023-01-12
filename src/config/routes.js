@@ -1,6 +1,7 @@
 const routes = {
   explore: '/',
   offers: '/offers',
+  category: '/category/:categoryName',
   profile: '/profile',
   signIn: '/sign-in',
   signUp: '/sign-up',
