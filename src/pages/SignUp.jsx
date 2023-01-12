@@ -3,6 +3,10 @@ import { ReactComponent as ArrowRightIcon } from '../assets/svg/keyboardArrowRig
 import visibilityIcon from '../assets/svg/visibilityIcon.svg'
 import routes from '../config/routes'
 import { Link } from 'react-router-dom'
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
+import { db } from '../firebase.config'
+import { setDoc, doc, serverTimestamp } from 'firebase/firestore'
+import { useNavigate } from 'react-router-dom'
 
 function SignUp() {
   const [showPassword, setShowPassword] = useState(false)
@@ -14,6 +18,24 @@ function SignUp() {
     confirmPassword: '',
   })
   const { name, email, password, confirmPassword } = formData
+
+  const navigate = useNavigate()
+  const auth = getAuth()
+
+  const handleOnSubmit = async (e) => {
+    e.preventDefault()
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+    const user = userCredential.user
+    updateProfile(auth.currentUser, { displayName: name })
+
+    const formDataCopy = { ...formData }
+    delete formDataCopy.password
+    delete formDataCopy.confirmPassword
+    formDataCopy.timestamp = serverTimestamp()
+    await setDoc(doc(db, 'users', user.uid), formDataCopy)
+
+    navigate('/')
+  }
 
   const handleOnChange = (e) => {
     setFormData((state) => ({
@@ -28,7 +50,7 @@ function SignUp() {
         <header>
           <p className='pageHeader'>Welcome to Market!</p>
         </header>
-        <form>
+        <form onSubmit={handleOnSubmit}>
           <input
             type='text'
             className='nameInput'

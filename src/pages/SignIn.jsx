@@ -3,6 +3,9 @@ import { ReactComponent as ArrowRightIcon } from '../assets/svg/keyboardArrowRig
 import visibilityIcon from '../assets/svg/visibilityIcon.svg'
 import routes from '../config/routes'
 import { Link } from 'react-router-dom'
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 function SignIn() {
   const [showPassword, setShowPassword] = useState(false)
@@ -11,11 +14,27 @@ function SignIn() {
     password: '',
   })
   const { email, password } = formData
+
   const handleOnChange = (e) => {
     setFormData((state) => ({
       ...state,
       [e.target.id]: e.target.value,
     }))
+  }
+
+  const navigate = useNavigate()
+  const auth = getAuth()
+
+  const handleOnSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password)
+      const user = userCredential.user
+      toast.success(`Success login to account ${user.displayName}`)
+      navigate('/')
+    } catch (error) {
+      toast.error(error.message)
+    }
   }
 
   return (
@@ -24,7 +43,7 @@ function SignIn() {
         <header>
           <p className='pageHeader'>Welcome Back!</p>
         </header>
-        <form>
+        <form onSubmit={handleOnSubmit}>
           <input
             type='email'
             className='emailInput'
